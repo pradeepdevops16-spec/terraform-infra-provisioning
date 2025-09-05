@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "pradeep-terraform-bucket-2025-09-04"
+  bucket = "pradeep-terraform-bucket-2025-09-54"
   # No ACL specified
 }
 
