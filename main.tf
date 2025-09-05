@@ -1,3 +1,7 @@
+provider "aws" {
+  region = var.region
+}
+
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
 }
@@ -43,19 +47,19 @@ resource "aws_security_group" "instance" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 (us-east-1)
+  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI for us-east-1
   instance_type = var.instance_type
   subnet_id     = aws_subnet.main.id
-  security_groups = [aws_security_group.instance.name]
+  vpc_security_group_ids = [aws_security_group.instance.id]
+}
+
+resource "random_id" "bucket_id" {
+  byte_length = 4
 }
 
 resource "aws_s3_bucket" "example" {
   bucket = "my-tf-s3-bucket-${random_id.bucket_id.hex}"
   force_destroy = true
-}
-
-resource "random_id" "bucket_id" {
-  byte_length = 4
 }
 
 resource "aws_iam_role" "example" {
@@ -79,14 +83,15 @@ resource "aws_db_instance" "default" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
-  name                 = "mydb"
   username             = "foo"
   password             = "foobarbaz"
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot  = true
+  publicly_accessible  = true
 }
 
 resource "aws_cloudwatch_log_group" "example" {
   name              = "/aws/terraform/log-group"
   retention_in_days = 7
 }
+
