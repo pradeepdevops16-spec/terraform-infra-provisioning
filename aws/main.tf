@@ -92,18 +92,19 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   subnet_ids = [aws_subnet.main_subnet.id]
 }
 
-resource "aws_db_instance" "mysql_db" {
+resource "aws_db_instance" "default" {
   allocated_storage    = 20
+  storage_type         = "gp2"
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
-  db_name                 = "mydb"
-  username             = "admin"
-  password             = "Password123!"
+  username             = "foo"
+  password             = "foobarbaz"
+  parameter_group_name = "default.mysql8.0"
   skip_final_snapshot  = true
   publicly_accessible  = true
-  db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.instance_sg.id]
+}
+
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
