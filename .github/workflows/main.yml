@@ -1,21 +1,23 @@
+name: Terraform CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.5
 
       - name: Terraform Init
         run: terraform -chdir=aws init
-
-      - name: Terraform Validate
-        run: terraform -chdir=aws validate
 
       - name: Terraform Plan
         run: terraform -chdir=aws plan
@@ -23,10 +25,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # <-- This is where you put your Terraform Apply step -->
-
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'       # Only apply on main branch
+        if: github.ref == 'refs/heads/main'
         run: terraform -chdir=aws apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
