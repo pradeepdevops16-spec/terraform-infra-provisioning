@@ -1,22 +1,23 @@
-variable "aws_region" {
-  description = "AWS region to deploy resources"
-  default     = "us-east-1"
-}
-
-variable "ami_id" {
-  description = "AMI ID for EC2 instance"
-  # Amazon Linux 2 AMI ID for us-east-1 region (change if needed)
-  default = "ami-0c94855ba95c71c99"
-}
-
-variable "project_name" {
-  description = "Project name prefix for resource naming"
-  default     = "terraform-demo"
-}
-
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
   default     = "10.0.0.0/16"
 }
 
+variable "subnet_cidr" {
+  description = "CIDR block for the subnet"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
+}
