@@ -97,7 +97,7 @@ resource "aws_db_instance" "mysql_db" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
-  name                 = "mydb"
+  db_name                 = "mydb"
   username             = "admin"
   password             = "Password123!"
   skip_final_snapshot  = true
